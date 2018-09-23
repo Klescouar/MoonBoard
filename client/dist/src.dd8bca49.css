@@ -1,2 +1,77 @@
-body {
-  background-color: tomato; }
+.Home {
+  font-family: 'typewriter'; }
+  .Home__Navbar__Title {
+    text-align: center;
+    text-decoration: underline; }
+  .Home__Body {
+    display: flex;
+    flex-direction: column;
+    align-items: center; }
+.Article {
+  width: 80%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center; }
+  .Article__Title {
+    text-align: center; }
+.Player {
+  width: 70%;
+  height: 20rem;
+  background-position: center;
+  background-size: cover;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end; }
+  .Player__Button {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.5rem; }
+    .Player__Button__Play {
+      width: 3rem;
+      margin: 0 0.6rem;
+      box-shadow: none;
+      text-decoration: none;
+      background-color: transparent;
+      border: none;
+      cursor: pointer; }
+    .Player__Button__Gauge {
+      width: 100%;
+      display: flex;
+      align-items: center; }
+      .Player__Button__Gauge__Volume {
+        display: flex;
+        width: 20%; }
+        .Player__Button__Gauge__Volume button {
+          width: 1.2rem;
+          box-shadow: none;
+          text-decoration: none;
+          background-color: transparent;
+          border: none;
+          padding: 0;
+          margin: 0;
+          cursor: pointer; }
+        .Player__Button__Gauge__Volume div {
+          width: 80%;
+          display: flex;
+          align-items: center; }
+          .Player__Button__Gauge__Volume div input {
+            cursor: pointer; }
+      .Player__Button__Gauge__Progress {
+        width: 80%;
+        height: 0.4rem;
+        margin-right: 0.5rem;
+        background-color: rgba(0, 0, 0, 0.4);
+        cursor: pointer; }
+        .Player__Button__Gauge__Progress .sb-soundplayer-progress-inner {
+          background-color: white;
+          height: 0.4rem;
+          border-radius: 1rem; }
+.ListItems__Link {
+  text-decoration: none; }
+.Admin__Content {
+  padding-top: 5rem !important; }
+@font-face {
+  font-family: 'typewriter';
+  src: url("Typo.5471ddd0.ttf"); }

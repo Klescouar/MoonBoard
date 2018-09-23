@@ -1,9 +1,23 @@
-import React, { Component } from 'react';
-import Home from './components/Home';
-import './components/Home.scss';
+import React, { Component, Fragment } from 'react';
+import { BrowserRouter as Router, Route } from 'react-router-dom';
+import Home from './components/Home/Home';
+import Admin from './components/Admin/Admin';
+import './components/Home/Home.scss';
+import './components/Article/Article.scss';
+import './components/Player/Player.scss';
+import './components/Admin/ListItems.scss';
+import './components/Admin/Admin.scss';
+import './index.scss';
 
 const App = () => {
-  return <Home />;
+  return (
+    <Router>
+      <Fragment>
+        <Route path="/" component={Home} exact />
+        <Route path="/admin" component={Admin} />
+      </Fragment>
+    </Router>
+  );
 };
 
 export default App;

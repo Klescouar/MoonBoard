@@ -1,15 +1,24 @@
-const jwt = require("jsonwebtoken");
-const bcrypt = require("bcrypt");
+const jwt = require('jsonwebtoken');
+const bcrypt = require('bcrypt');
+const { createWriteStream } = require('fs');
 
 const createToken = (user, secret, expiresIn) => {
   const { username, email } = user;
   return jwt.sign({ username, email }, secret, { expiresIn });
 };
 
+const storeUpload = ({ stream, filename }) =>
+  new Promise((resolve, reject) =>
+    stream
+      .pipe(createWriteStream('./client/public/images/' + filename))
+      .on('finish', () => resolve())
+      .on('error', reject)
+  );
+
 exports.resolvers = {
   Query: {
     getAllRecipes: async (root, args, { Recipe }) => {
-      const allRecipes = await Recipe.find().sort({ createdDate: "desc" });
+      const allRecipes = await Recipe.find().sort({ createdDate: 'desc' });
       return allRecipes;
     },
     getRecipe: async (root, { _id }, { Recipe }) => {
@@ -23,23 +32,23 @@ exports.resolvers = {
             $text: { $search: searchTerm }
           },
           {
-            score: { $meta: "textScore" }
+            score: { $meta: 'textScore' }
           }
         ).sort({
-          score: { $meta: "textScore" }
+          score: { $meta: 'textScore' }
         });
         return searchResults;
       } else {
         const recipes = await Recipe.find().sort({
-          likes: "desc",
-          createdDate: "desc"
+          likes: 'desc',
+          createdDate: 'desc'
         });
         return recipes;
       }
     },
     getUserRecipes: async (root, { username }, { Recipe }) => {
       const userRecipes = await Recipe.find({ username }).sort({
-        createdDate: "desc"
+        createdDate: 'desc'
       });
       return userRecipes;
     },
@@ -50,13 +59,20 @@ exports.resolvers = {
       const user = await User.findOne({
         username: currentUser.username
       }).populate({
-        path: "favorites",
-        model: "Recipe"
+        path: 'favorites',
+        model: 'Recipe'
       });
       return user;
     }
   },
   Mutation: {
+    uploadFile: async (parent, { file }) => {
+      const { stream, filename } = await file;
+      console.log('hoooooooooooooooooo');
+      console.log(filename);
+      await storeUpload({ stream, filename });
+      return true;
+    },
     addRecipe: async (
       root,
       { name, imageUrl, description, category, instructions, username },
@@ -101,25 +117,25 @@ exports.resolvers = {
     signinUser: async (root, { username, password }, { User }) => {
       const user = await User.findOne({ username });
       if (!user) {
-        throw new Error("User not found");
+        throw new Error('User not found');
       }
       const isValidPassword = await bcrypt.compare(password, user.password);
       if (!isValidPassword) {
-        throw new Error("Invalid password");
+        throw new Error('Invalid password');
       }
-      return { token: createToken(user, process.env.SECRET, "1hr") };
+      return { token: createToken(user, process.env.SECRET, '1hr') };
     },
     signupUser: async (root, { username, email, password }, { User }) => {
       const user = await User.findOne({ username });
       if (user) {
-        throw new Error("User already exists");
+        throw new Error('User already exists');
       }
       const newUser = await new User({
         username,
         email,
         password
       }).save();
-      return { token: createToken(newUser, process.env.SECRET, "1hr") };
+      return { token: createToken(newUser, process.env.SECRET, '1hr') };
     }
   }
 };

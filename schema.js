@@ -1,4 +1,5 @@
 exports.typeDefs = `
+scalar Upload
 
 type Recipe {
   _id: ID
@@ -35,6 +36,7 @@ type Token {
 }
 
 type Mutation {
+  uploadFile(file: Upload!): Boolean,
   addRecipe(name: String!, imageUrl: String!, description: String!, category: String!, instructions: String!, username: String): Recipe
   deleteUserRecipe(_id: ID): Recipe
   likeRecipe(_id: ID!, username: String!): Recipe
